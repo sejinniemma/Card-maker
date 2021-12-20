@@ -1,6 +1,6 @@
 import Header from "../header/header";
 import Footer from "../footer/footer";
-
+import styles from "./login.module.css";
 const Login = ({ authService }) => {
   const onLogin = (event) => {
     const value = event.target.innerText;
@@ -8,16 +8,20 @@ const Login = ({ authService }) => {
   };
 
   return (
-    <section>
+    <section className={styles.login}>
       <Header />
       <section>
-        <h1>Login</h1>
-        <ul>
-          <li>
-            <button onClick={onLogin}>Github</button>
+        <h1 className={styles.title}>Login</h1>
+        <ul className={styles.list}>
+          <li className={styles.item}>
+            <button className={styles.button} onClick={onLogin}>
+              Github
+            </button>
           </li>
-          <li>
-            <button onClick={onLogin}>Google</button>
+          <li className={styles.item}>
+            <button className={styles.button} onClick={onLogin}>
+              Google
+            </button>
           </li>
         </ul>
       </section>
