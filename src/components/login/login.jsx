@@ -2,14 +2,17 @@ import Header from "../header/header";
 import Footer from "../footer/footer";
 import styles from "./login.module.css";
 import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+
 const Login = ({ authService }) => {
   const navigate = useNavigate();
 
   const goToMaker = (userId) => {
     navigate({
-      pathname="/maker",
-      state: {id: userId },
-  });
+      pathname: "/maker",
+      state: { id: userId },
+    });
+  };
 
   const onLogin = (event) => {
     const provider = event.target.innerText;
@@ -17,6 +20,12 @@ const Login = ({ authService }) => {
       .login(provider)
       .then((data) => goToMaker(data.user.uid));
   };
+
+  useEffect(() => {
+    authService.onAuthChange((user) => {
+      user && goToMaker(user.uid);
+    });
+  });
 
   return (
     <section className={styles.login}>
