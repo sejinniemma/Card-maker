@@ -1,48 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Editor from "../editor/editor";
 import Footer from "../footer/footer";
 import Header from "../header/header";
 import Preview from "../preview/preview";
 import styles from "./maker.module.css";
 
-const Maker = ({ FileInput, authService }) => {
-  const [cards, setCards] = useState({
-    1: {
-      id: "1",
-      name: "Emma",
-      company: "Samsung",
-      theme: "light",
-      title: "front-end enginner",
-      email: "jsj0471@naver.com",
-      message: "To do yout best",
-      fileName: "ellie",
-      fileURL: null,
-    },
-    2: {
-      id: "2",
-      name: "Ellie",
-      company: "Fanng",
-      theme: "colorful",
-      title: "front-end enginner",
-      email: "ellie0471@naver.com",
-      message: `Don't forget to code your dream`,
-      fileName: "ellie",
-      fileURL: null,
-    },
-    3: {
-      id: "3",
-      name: "Emma",
-      company: "Samsung",
-      theme: "dark",
-      title: "front-end enginner",
-      email: "jsj0471@naver.com",
-      message: "Life is challenge",
-      fileName: "ellie",
-      fileURL: null,
-    },
-  });
-
+const Maker = ({ FileInput, authService, cardRepository }) => {
+  const loaction = useLocation();
+  const locationState = loaction?.state;
+  const [userId, setUserId] = useState(locationState && locationState.id);
+  const [cards, setCards] = useState({});
   const navigate = useNavigate();
 
   const onLogout = () => {
@@ -63,6 +31,7 @@ const Maker = ({ FileInput, authService }) => {
       updated[card.id] = card;
       return updated;
     });
+    cardRepository.saveCard(userId, card);
   };
 
   const deleteCard = (card) => {
@@ -71,6 +40,7 @@ const Maker = ({ FileInput, authService }) => {
       delete updated[card.id];
       return updated;
     });
+    cardRepository.removeCard(userId, card);
   };
   return (
     <section className={styles.maker}>
