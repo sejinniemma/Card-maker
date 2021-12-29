@@ -18,6 +18,16 @@ const Maker = ({ FileInput, authService, cardRepository }) => {
   };
 
   useEffect(() => {
+    if (!userId) {
+      return;
+    }
+    const stopSync = cardRepository.syncCard(userId, (cards) =>
+      setCards(cards)
+    );
+    return () => stopSync();
+  }, [userId]);
+
+  useEffect(() => {
     authService.onAuthChange((user) => {
       if (!user) {
         navigate("/");
